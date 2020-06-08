@@ -6,3 +6,5 @@ A shell script that compiles NASM and passes it through the loader. Its a script
 root@vm:~# chmod +x nasm-compiler-loader.sh
 root@vm:~# ./nasm-compiler-loader FILENAME (with extension)
 ```
+
+![Example](/nasminstruct.JPG)
