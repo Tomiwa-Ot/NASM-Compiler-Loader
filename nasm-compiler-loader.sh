@@ -26,39 +26,48 @@ echo "@@@@@@@@@@@@@@@@@@@@@@@@ @@@ @@@ @@    @ @@@ @     @ @@@@@@@@@@@@@@@@@@@@@
 echo "@@@@@@@@@@@@@@@@@@@@@@@@   .@# ,@@@, &.@@,.@ @@( *@@ @@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+echo ""
+echo ""
 
-if [$# -ne 1]
+
+if [ $# -ne 1 ]
 then
     echo "Invalid paramters specified"
     echo "Usage: ./nasm-compiler-loader FILENAME (with extension)"
 else
-    filename=$1 | cut -f 1 -d '.'
+    echo "Please enter he file name without the extension"
+	read filename
     nasm -f elf $1
-    if [$? -eq 0]
+    if [ $? -eq 0 ];
     then
         ld -m elf_i386 -s -o $filename $filename.o
         chmod +x $filename
-        echo "Do you want to delete the object file? (Y/N)"
+        echo "Do you want to delete the object file? (1/2) 1=yes 2=no"
         read answer
-        if [$answer == Y || $answer == y || $answer == Yes || $answer == yes]
+        if [ $answer -eq 1 ];
         then
             rm -f $filename.o
             echo "Object file deleted"
             ./$filename
-        elif [$answer == N || $answer == n || $answer == No || $answer == no]
+        elif [ $answer -eq 2 ] ;
         then
             ./$filename
         else
             echo "Wrong option"
             echo "Exit Status: $?"
-        echo "Do you want to delete the executable file? (Y/N)"
+	fi
+        echo "Do you want to delete the executable file? (1/2) 1=yes 2=no"
         read reply
-        if [$answer == Y || $answer == y || $answer == Yes || $answer == yes]
+        if [ $reply -eq 1 ];
         then
             rm -f $filename
             echo "Executable deleted"
-        elif [$answer == N || $answer == n || $answer == No || $answer == no]
+        elif [ $reply -eq 2 ];
+	then
             echo "Executable not deleted"
         else
-            echo "Invalid option specified" 
+            echo "Invalid option specified"
             echo "Exit Status: $?"
+	fi
+     fi
+fi
