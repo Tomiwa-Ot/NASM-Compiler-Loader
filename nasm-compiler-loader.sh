@@ -32,42 +32,42 @@ echo ""
 
 if [ $# -ne 1 ]
 then
-    echo "Invalid paramters specified"
-    echo "Usage: ./nasm-compiler-loader FILENAME (with extension)"
-else
-    echo "Please enter he file name without the extension"
-	read filename
-    nasm -f elf $1
-    if [ $? -eq 0 ];
+    echo "[+] Invalid paramters specified"
+    echo "[+] Usage: ./nasm-compiler-loader <filename>"
+    exit 1
+fi
+
+filename=$(basename $1)
+nasm -f elf $1
+if [ $? -eq 0 ];
+then
+    ld -m elf_i386 -s -o $filename $filename.o
+    chmod +x $filename
+    echo "> Do you want to delete the object file? (1/2) 1=yes 2=no: "
+    read answer
+    if [ $answer -eq 1 ];
     then
-        ld -m elf_i386 -s -o $filename $filename.o
-        chmod +x $filename
-        echo "Do you want to delete the object file? (1/2) 1=yes 2=no"
-        read answer
-        if [ $answer -eq 1 ];
-        then
-            rm -f $filename.o
-            echo "Object file deleted"
-            ./$filename
-        elif [ $answer -eq 2 ] ;
-        then
-            ./$filename
-        else
-            echo "Wrong option"
-            echo "Exit Status: $?"
-	fi
-        echo "Do you want to delete the executable file? (1/2) 1=yes 2=no"
-        read reply
-        if [ $reply -eq 1 ];
-        then
-            rm -f $filename
-            echo "Executable deleted"
-        elif [ $reply -eq 2 ];
-	then
-            echo "Executable not deleted"
-        else
-            echo "Invalid option specified"
-            echo "Exit Status: $?"
-	fi
-     fi
+        rm -f $filename.o
+        echo "[+] Object file deleted"
+        ./$filename
+    elif [ $answer -eq 2 ] ;
+    then
+        ./$filename
+    else
+        echo "[+] Wrong option"
+        echo "[+] Exit Status: $?"
+    fi
+    echo "> Do you want to delete the executable file? (1/2) 1=yes 2=no :"
+    read reply
+    if [ $reply -eq 1 ];
+    then
+        rm -f $filename
+        echo "[+] Executable deleted"
+    elif [ $reply -eq 2 ];
+    then
+        echo "[+] Executable not deleted"
+    else
+        echo "[+] Invalid option specified"
+        echo "[+] Exit Status: $?"
+    fi
 fi
