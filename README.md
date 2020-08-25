@@ -4,7 +4,8 @@ A shell script that compiles NASM and passes it through the loader. Its a script
 ## Syntax Guide
 ```console
 root@vm:~# chmod +x nasm-compiler-loader.sh
-root@vm:~# ./nasm-compiler-loader FILENAME (with extension)
+root@vm:~# ./nasm-compiler-loader <filename>
 ```
 
-![Example](/nasminstruct.JPG)
+
+![Example](/nams.JPG)
